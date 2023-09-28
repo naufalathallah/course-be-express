@@ -1,4 +1,5 @@
 const express = require("express");
+const validator = require("express-validator");
 
 const placesControllers = require("../controllers/places-controller");
 
