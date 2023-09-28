@@ -17,15 +17,23 @@ async function getCoordsForAddress(address) {
     const error = new HttpError("tiddak bisa menemukan lokasi", 422);
     throw error;
   }
+
   let coordinates = "";
   if (data.status === "REQUEST_DENIED") {
-    return (coordinates = {
-      lat: 41.7484474,
-      lng: -53.9871516,
-    });
+    return (coordinates = generateRandomCoordinates());
   }
-  coordinates = data.results[0].geometry.location;
-  return coordinates;
+
+  return (coordinates = data.results[0].geometry.location);
+}
+
+function generateRandomCoordinates() {
+  const lat = Math.random() * 180 - 90;
+  const lng = Math.random() * 360 - 180;
+
+  return {
+    lat: parseFloat(lat.toFixed(7)),
+    lng: parseFloat(lng.toFixed(7)),
+  };
 }
 
 module.exports = getCoordsForAddress;
