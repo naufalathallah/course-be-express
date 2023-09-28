@@ -1,5 +1,7 @@
 const express = require("express");
 
+const HttpError = require("../models/http-error");
+
 const router = express.Router();
 
 const DUMMY_PLACES = [
@@ -76,6 +78,13 @@ router.get("/:pid", (req, res, next) => {
   const place = DUMMY_PLACES.find((p) => {
     return p.id === placeId;
   });
+
+  if (!place) {
+    return next(
+      new HttpError("tidak bisa menemukan tempat dari id yang diberikan", 404)
+    );
+  }
+
   res.json({ place });
 });
 
@@ -84,6 +93,16 @@ router.get("/user/:uid", (req, res, next) => {
   const place = DUMMY_PLACES.find((p) => {
     return p.creator === userId;
   });
+
+  if (!place) {
+    return next(
+      new HttpError(
+        "tidak bisa menemukan tempat dari id user yang diberikan",
+        404
+      )
+    );
+  }
+
   res.json({ place });
 });
 
