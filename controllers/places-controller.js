@@ -104,8 +104,9 @@ const createPlace = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     console.log(errors);
-    new HttpError("invalid input", 422);
+    throw new HttpError("invalid input", 422);
   }
+
   const { title, description, coordinates, address, creator } = req.body;
   const createdPlace = {
     id: uuid.v4(),
@@ -121,6 +122,12 @@ const createPlace = (req, res, next) => {
 };
 
 const updatePlace = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    console.log(errors);
+    throw new HttpError("invalid input", 422);
+  }
+
   const { title, description } = req.body;
   const placeId = req.params.pid;
   const updatedPlace = { ...DUMMY_PLACES.find((p) => p.id === placeId) };
