@@ -1,16 +1,24 @@
+require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
+// comment for practice
+// const mongoPractice = require("./mongo");
+const mongoose = require("mongoose");
 
 const placesRoutes = require("./routes/places-routes");
 const usersRoutes = require("./routes/users-routes");
 const HttpError = require("./models/http-error");
 
 const app = express();
+const url = process.env.DATABASE_URL;
 
 app.use(bodyParser.json());
 
 app.use("/api/places", placesRoutes);
 app.use("/api/users", usersRoutes);
+// comment for practice
+// app.post("/products", mongoPractice.createProduct);
+// app.get("/products", mongoPractice.getProducts);
 
 app.use((req, res, next) => {
   const error = new HttpError("tidak bisa menemukan route", 404);
@@ -25,4 +33,11 @@ app.use((error, req, res, next) => {
   res.json({ message: error.message || "error tidak diketahui" });
 });
 
-app.listen(5000);
+mongoose
+  .connect(url)
+  .then(() => {
+    app.listen(5000);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
