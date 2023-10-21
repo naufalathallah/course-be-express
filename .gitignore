@@ -2,3 +2,4 @@
 .env
 mongo_practice.js
 mongoose_practice.js
+uploads/images
